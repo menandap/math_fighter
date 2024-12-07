@@ -33,7 +33,6 @@ export default class MathFighterScene extends Phaser.Scene {
     this.load.image("fight-bg", "images/fight_bg.png");
     this.load.image("tile", "images/tile.png");
     this.load.image("start-btn", "images/start_button.png");
-    this.load.image("start-btn", "images/start_button.png");
 
     this.load.spritesheet("player", "images/warrior1.png", {
       frameHeight: 80,
