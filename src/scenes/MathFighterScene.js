@@ -33,6 +33,11 @@ export default class MathFighterScene extends Phaser.Scene {
     this.correctAnswer = undefined;
     this.playerAttack = false;
     this.enemyAttack = false;
+    this.score = 0;
+    this.scoreLabel = undefined;
+    this.timer = 10;
+    this.timerLabel = undefined;
+    this.countdown = undefined;
   }
   preload() {
     this.load.image("background", "images/bg_layer1.png");
@@ -120,6 +125,13 @@ export default class MathFighterScene extends Phaser.Scene {
       null,
       this
     );
+
+    this.scoreLabel = this.createScoreLabel(10,10,0);
+
+    this.timerLabel = this.add.text(380,10, "Time :", {
+        fill : "white",
+        backgroundColor: "black",
+    }).setDepth(1);
   }
 
   update(time) {
@@ -130,6 +142,8 @@ export default class MathFighterScene extends Phaser.Scene {
       });
 
       this.playerAttack = true;
+      this.score += 10;
+      this.scoreLabel.setText('Score: ${this.score}')
     }
 
     if (this.correctAnswer === undefined) {
@@ -147,6 +161,11 @@ export default class MathFighterScene extends Phaser.Scene {
       this.enemyAttack = true;
     }
 
+    this.scoreLabel.setText("Score: " + this.score);
+
+    if((this.startGame = true)){
+        this.timerLabel.setText("Timer:" + this.timer);
+    }
   }
 
   createAnimation() {
@@ -219,6 +238,13 @@ export default class MathFighterScene extends Phaser.Scene {
     this.input.on("gameobjectdown", this.addNumber, this); //tanya
 
     this.generateQuestion();
+
+    this.countdown = this.time.addEvent({
+        delay: 1000,
+        callback: this.gameOver,
+        callbackScope: this,
+        loop: true,
+    });
 
     // this.timedEvent = this.time.addEvent({
     //     delay: 1000,
@@ -466,5 +492,12 @@ export default class MathFighterScene extends Phaser.Scene {
     this.add.existing(label);
 
     return label;
+  }
+
+  gameOver(){
+    this.timer--;
+    if(this.timer < 0){
+        this.scene.start("over-scene", { score: this.score});
+    }
   }
 }
