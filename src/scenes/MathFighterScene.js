@@ -35,7 +35,7 @@ export default class MathFighterScene extends Phaser.Scene {
     this.enemyAttack = false;
     this.score = 0;
     this.scoreLabel = undefined;
-    this.timer = 10;
+    this.timer = 60;
     this.timerLabel = undefined;
     this.countdown = undefined;
   }
